@@ -10,9 +10,9 @@
  */
 interface Collection_Interface {
     //public void initialize();//              O(?)
-    String get(int index);            //O(1)
-    void set(int index, String value);//O(1)
-    void setAll(String value);        //O(1)
+    String get(int index);              //O(1)
+    void   set(int index, String value);//O(1)
+    void   setAll(String value);        //O(1)
 }
 /**solution (there are 2 solutions in this projects
  1. Collection_1

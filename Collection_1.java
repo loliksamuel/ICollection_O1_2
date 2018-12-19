@@ -4,9 +4,9 @@
 class Collection_1 implements Collection_Interface {
 
     private Node_1[] arr;
-    //to support setAll() in O(1) added 2 params
+    //to support setAll() in O(1) added 2 variables
     private static String field1_4All;
-    private static int version1_4All;
+    private static int    version1_4All;
 
     Collection_1(int len) {
         arr = new Node_1[len];
@@ -21,6 +21,8 @@ class Collection_1 implements Collection_Interface {
             arr[i] = new Node_1(value);
         else
             arr[i].setField1(value);
+
+        //here is the smart part: increase version for boths
         int ver = Math.max(arr[i].getVersion1(), version1_4All) + 1;
         arr[i].setVersion1(ver);
         version1_4All = ver;
@@ -29,14 +31,19 @@ class Collection_1 implements Collection_Interface {
 
     public void setAll(String value) {
         field1_4All = value;
+
+        //here is the smart part: increase version for all only
         version1_4All++;
     }
+
 
     public String get(int i) {
         if (field1_4All == null)
             return (arr[i] == null) ? null : arr[i].getField1();
         if (arr[i] == null)
             return field1_4All;
+
+        //here is the smart part: version comparesment
         if (arr[i].getVersion1() >= version1_4All)
             return (arr[i] == null) ? null : arr[i].getField1();
         else
