@@ -28,7 +28,7 @@ interface Collection_Interface {
 
  1. set(index i, value v): array[i] = {id++, value}
 
- 2. et(index i, value v): if(all.timestamp > array[i].timestamp) return all.value
+ 2. get(index i, value v): if(all.timestamp > array[i].timestamp) return all.value
                              else return array[i].value
 
  3. setAll(value v): all = {id++, value}
@@ -36,10 +36,10 @@ interface Collection_Interface {
 
 
  A problem with this approach is that eventually you'll run out of ids for timestamp, and might wrap around. If you chose a 64 bit value to store timestamps,
- then this gives you 18,446,744,073,709,551,616 insertions or setAlls before this happens. Depending on the expected use of the datastructure,
+ then this gives you 2^64=18,446,744,073,709,551,616 insertions or setAlls before this happens. Depending on the expected use of the data structure,
  an O(n) cleanup phase might be appropriate, or you could just throw an exception.
  Another issue that might need to be considered is multi-threading. Three obvious problems:
- if id++ isn't atomic and two threads obtained a new id at the same time then you could get two entries with the same id.
+ if id++ isn't atomic and 2 threads obtained a new id at the same time then you could get 2 entries with the same id.
  if the incrementation of id and the assignment of the created tuple aren't atomic together (they're probably not) and there were two simultaneous inserts, then you could get a race condition where the older id wins.
  if the assignment of the tuple isn't atomic, and there's an insert() at the same time as a get() then you might end up in a position where you've got say {new_id, old_value} in the array, causing the wrong value to be returned.
  If any of these are problems, the absolute easiest solution to this is to put "not thread safe" in the documentation (cheating). Alternatively, if you can't implement the methods atomically in your language of choice, you'd need to put some sort of synchronisation locks around them.
